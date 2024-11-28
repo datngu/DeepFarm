@@ -188,9 +188,8 @@ process LABEL_generating {
 process TFR_data_generating {
     container 'ndatth/deepsea:v0.0.0'
     publishDir "${params.outdir}/tfr_data", mode: 'symlink', overwrite: true
-    memory '32 GB'
-    cpus 4
-    label 'with_1gpu'
+    memory '16 GB'
+    cpus 2
     
 
     input:
