@@ -215,7 +215,7 @@ process TFR_data_generating {
 process DANQ_training_fw {
     container 'ndatth/deepsea:v0.0.0'
     publishDir "${params.outdir}/train", mode: 'symlink', overwrite: true
-    memory '64 GB'
+    memory '60 GB'
     cpus 8
     label 'with_1gpu'
     
@@ -245,7 +245,7 @@ process DANQ_training_fw {
 process DEEPSEA_training_fw {
     container 'ndatth/deepsea:v0.0.0'
     publishDir "${params.outdir}/train", mode: 'symlink', overwrite: true
-    memory '64 GB'
+    memory '60 GB'
     cpus 8
     label 'with_1gpu'
     
@@ -276,7 +276,7 @@ process DEEPSEA_training_fw {
 // process DANQ_training_fw {
 //     container 'ndatth/deepsea:v0.0.0'
 //     publishDir "${params.outdir}/train_fw", mode: 'symlink', overwrite: true
-//     memory '64 GB'
+//     memory '60 GB'
 //     cpus 32
 //     label 'with_1gpu'
     
