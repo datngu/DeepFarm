@@ -243,7 +243,7 @@ process DANQ_training_fw {
 
 process DEEPSEA_training_fw {
     container 'ndatth/deepsea:v0.0.0'
-    publishDir "${params.outdir}/train", mode: 'symlink', overwrite: true
+    publishDir "${params.outdir}/train", mode: 'copy', overwrite: true
     memory '60 GB'
     cpus 8
     label 'with_1gpu'
@@ -266,6 +266,37 @@ process DEEPSEA_training_fw {
     mv ${params.test_chrom}_rc.tfr ${params.test_chrom}_rc.test
     
     train_deepsea.py --train *_fw.tfr --val *_fw.val --out DeepSEA_model_${lr} --batch_size 1024 --lr ${lr}
+
+    """
+}
+
+
+
+process Mymodel_training_fw {
+    container 'ndatth/deepsea:v0.0.0'
+    publishDir "${params.outdir}/train", mode: 'copy', overwrite: true
+    memory '60 GB'
+    cpus 8
+    label 'with_1gpu'
+    
+
+    input:
+    path tfr
+    val lr
+
+    output:
+    path("DeepFARM_model*")
+
+
+    script:
+    """
+    mv ${params.val_chrom}_fw.tfr ${params.val_chrom}_fw.val
+    mv ${params.val_chrom}_rc.tfr ${params.val_chrom}_rc.val
+
+    mv ${params.test_chrom}_fw.tfr ${params.test_chrom}_fw.test
+    mv ${params.test_chrom}_rc.tfr ${params.test_chrom}_rc.test
+    
+    train_mymodel.py --train *_fw.tfr --val *_fw.val --out DeepFARM_model_${lr} --batch_size 1024 --lr ${lr}
 
     """
 }
