@@ -112,7 +112,7 @@ NUM_INPUT = dim_sample[0].shape[1]
 NUM_OUTPUT = dim_sample[1].shape[1]
 
 
-model = build_model()
+model = build_model(args.lr)
 
 checkpointer = ModelCheckpoint(filepath = out_model, verbose=1, save_best_only=True)
 earlystopper = EarlyStopping(monitor="val_loss", patience=5, verbose=1)
@@ -121,7 +121,7 @@ train = get_dataset(train_files, batch= batch_size, num_threads = num_threads)
 val = get_dataset(val_files, batch= batch_size, num_threads = num_threads)
 
 
-history = model.fit(train, epochs=200, validation_data=val, callbacks=[checkpointer, earlystopper])
+history = model.fit(train, epochs=100, validation_data=val, callbacks=[checkpointer, earlystopper])
 
 
 ## export history
