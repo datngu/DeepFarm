@@ -44,7 +44,7 @@ params.predict        = false
 
 log.info """\
 ================================================================
-                        nf-deepsea
+                        DeepFARM
 ================================================================
     genome              : $params.genome
     peaks               : $params.peaks
@@ -76,8 +76,6 @@ workflow {
     
     // hyper params:learning rates
     Learning_rate_ch = channel.from(params.learning_rates)
-    //Hyper_params_ch = Method_ch.combine(Learning_rate_ch)
-    //Method_ch = channel.from(params.methods)
 
     INDEX_genome(params.genome)
     BIN_genome(INDEX_genome.out)
@@ -87,8 +85,6 @@ workflow {
     BED_mapping(BIN_genome.out, ch_peaks)
     
     LABEL_generating(BED_mapping.out.collect())
-    
-    //LABEL_generating.out.view()
     
     TFR_data_generating(LABEL_generating.out, BIN_genome.out, params.genome)
     
