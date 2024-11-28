@@ -22,7 +22,7 @@ export TOWER_ACCESS_TOKEN=eyJ0aWQiOiA3OTAxfS4xNGY5NTFmOWNiZmEwNjZhOGFkYzliZTg3MD
 
 nextflow run main.nf -resume -w work_dir \
     --genome ${genome} \
-    --chrom 22 \
+    --chrom 18 \
     --val_chrom 16 \
     --test_chrom 17 \
     --window 200 \
