@@ -255,7 +255,7 @@ process DEEPSEA_training_fw {
     val lr
 
     output:
-    path("DanQ_model*")
+    path("DeepSEA_model*")
 
 
     script:
@@ -266,7 +266,7 @@ process DEEPSEA_training_fw {
     mv ${params.test_chrom}_fw.tfr ${params.test_chrom}_fw.test
     mv ${params.test_chrom}_rc.tfr ${params.test_chrom}_rc.test
     
-    train_danq.py --train *_fw.tfr --val *_fw.val --out DanQ_model_${lr} --batch_size 1024 --lr ${lr}
+    train_deepsea.py --train *_fw.tfr --val *_fw.val --out DeepSEA_model_${lr} --batch_size 1024 --lr ${lr}
 
     """
 }
