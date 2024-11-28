@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --ntasks=1
 #SBATCH --nodes=1                
-#SBATCH --job-name=DS-cattle   
+#SBATCH --job-name=DS-pig   
 #SBATCH --mem=4G                
 #SBATCH --partition=gpu
 #SBATCH --mail-user=nguyen.thanh.dat@nmbu.no
@@ -13,7 +13,7 @@ module load Nextflow/21.03
 module load singularity/rpm
 
 
-genome='/mnt/users/ngda/genomes/cattle/Bos_taurus.ARS-UCD1.2.dna_sm.toplevel.fa'
+genome='/mnt/users/ngda/genomes/pig/Bos_taurus.ARS-UCD1.2.dna_sm.toplevel.fa'
 
 export NXF_SINGULARITY_CACHEDIR=/mnt/users/ngda/sofware/singularity
 export TOWER_ACCESS_TOKEN=eyJ0aWQiOiA3OTAxfS4xNGY5NTFmOWNiZmEwNjZhOGFkYzliZTg3MDc4YWI4ZTRiYTk4ZmI5
@@ -22,10 +22,10 @@ export TOWER_ACCESS_TOKEN=eyJ0aWQiOiA3OTAxfS4xNGY5NTFmOWNiZmEwNjZhOGFkYzliZTg3MD
 
 nextflow run main.nf -resume -w work_dir \
     --genome ${genome} \
-    --chrom 29 \
-    --val_chrom 21 \
-    --test_chrom 25 \
+    --chrom 22 \
+    --val_chrom 16 \
+    --test_chrom 17 \
     --window 200 \
     --seqlen 1000 \
-    --peaks '/mnt/SCRATCH/ngda/data/Cattle/*.bed' \
+    --peaks '/mnt/SCRATCH/ngda/data/Pig/*.bed' \
     -with-tower

@@ -17,10 +17,7 @@ module load singularity/rpm
 genome='/mnt/users/ngda/genomes/atlantic_salmon/Salmo_salar.Ssal_v3.1.dna_sm.toplevel.fa'
 
 export NXF_SINGULARITY_CACHEDIR=/mnt/users/ngda/sofware/singularity
-
-# nextflow_res_dir=/mnt/ScratchProjects/Aqua-Faang/dat_projects/aqua_qtl/results/${tis}
-# nextflow_trace_dir=/mnt/ScratchProjects/Aqua-Faang/dat_projects/aqua_qtl/results/trace_dir_${tis}
-# nextflow_work_dir=/mnt/ScratchProjects/Aqua-Faang/dat_projects/aqua_qtl/work_dir/${tis}
+export TOWER_ACCESS_TOKEN=eyJ0aWQiOiA3OTAxfS4xNGY5NTFmOWNiZmEwNjZhOGFkYzliZTg3MDc4YWI4ZTRiYTk4ZmI5
 
 
 nextflow run main.nf -resume -w work_dir \
@@ -30,4 +27,5 @@ nextflow run main.nf -resume -w work_dir \
     --test_chrom 25 \
     --window 200 \
     --seqlen 1000 \
-    --peaks '/mnt/SCRATCH/ngda/data/Salmon/*.bed'
+    --peaks '/mnt/SCRATCH/ngda/data/Salmon/*.bed' \
+    -with-tower
