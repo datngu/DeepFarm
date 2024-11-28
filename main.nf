@@ -75,6 +75,7 @@ workflow {
     
     // hyper params:learning rates
     Learning_rate_ch = channel.from(params.learning_rates)
+    Chrom_ch = channel.from(1..params.chrom)
 
     INDEX_genome(params.genome)
     BIN_genome(INDEX_genome.out)
@@ -85,10 +86,10 @@ workflow {
     
     LABEL_generating(BED_mapping.out.collect())
     
-    TFR_data_generating(LABEL_generating.out, BIN_genome.out, params.genome)
+    TFR_data_generating(LABEL_generating.out, BIN_genome.out, params.genome, Chrom_ch)
     
-    DANQ_training_fw(TFR_data_generating.out, Learning_rate_ch)
-    DEEPSEA_training_fw(TFR_data_generating.out, Learning_rate_ch)
+    DANQ_training_fw(TFR_data_generating.out.collect(), Learning_rate_ch)
+    DEEPSEA_training_fw(TFR_data_generating.out.collect(), Learning_rate_ch)
 
     // Mymodel_training_fw(TFR_data_generating.out, Learning_rate_ch)
 }
@@ -196,6 +197,7 @@ process TFR_data_generating {
     path lab
     path bed
     path genome
+    val chr
 
     output:
     path("*.tfr")
@@ -203,11 +205,9 @@ process TFR_data_generating {
 
     script:
     """
-    for i in {1..${params.chrom}}
-    do
-        generate_tfr.py --label \${i}.txt.gz --bed $bed --genome $genome --pad_scale 5 --out \${i}
-    done
-    
+
+    generate_tfr.py --label ${chr}.txt.gz --bed $bed --genome $genome --pad_scale 5 --out \${i}
+  
     """
 }
 
