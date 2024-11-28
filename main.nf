@@ -30,7 +30,6 @@ params.test_chrom      = 25
 
 params.window          = 200
 params.seqlen          = 1000
-//params.methods         = ['DanQ', 'DeepSEA', 'DeepFormer']
 params.learning_rates  = [1e-3, 1e-4, 5e-4, 5e-5]
 
 
