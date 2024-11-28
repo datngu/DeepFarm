@@ -206,7 +206,7 @@ process TFR_data_generating {
     script:
     """
 
-    generate_tfr.py --label ${chr}.txt.gz --bed $bed --genome $genome --pad_scale 5 --out \${i}
+    generate_tfr.py --label ${chr}.txt.gz --bed $bed --genome $genome --pad_scale 5 --out ${chr}
   
     """
 }
