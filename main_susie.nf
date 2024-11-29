@@ -34,9 +34,9 @@ workflow {
 
 
 process IPACT_inference {
-    container 'ndatth/pytorch:v0.0.0'
-    publishDir "${params.outdir}/${params.sub_outdir}", mode: 'copy', overwrite: true
-    memory '32 GB'
+    container 'ndatth/deepsea:v0.0.0'
+    publishDir "${params.outdir}", mode: 'copy', overwrite: true
+    memory '60 GB'
     cpus 8
     label 'with_1gpu'
 
