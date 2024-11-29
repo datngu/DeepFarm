@@ -29,7 +29,8 @@ cp results/tfr_data/${test_chrom}_fw.tfr trained_results
 chars="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 random_chars=$(printf "%s" "${chars:RANDOM%${#chars}:1}${chars:RANDOM%${#chars}:1}")
 
-nextflow run main_eval.nf -resume -w work_dir \
+nextflow run main_eval.nf -resume \
+    -w work_dir_eval \
     -name eval_pig_${random_chars} \
     --test_tfr "$PWD/trained_results/${test_chrom}_fw.tfr" \
     --models "$PWD/trained_results/*.h5" \
