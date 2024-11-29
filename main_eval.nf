@@ -45,11 +45,8 @@ nextflow.enable.dsl=2
 workflow {
     
     Model_ch = Channel.fromPath(params.models, checkIfExists: true)
-    TFR_ch = Channel.fromPath(params.test_tfr, checkIfExists: true)
+    TFR_ch = Channel.fromPath(params.test_tfr, checkIfExists: true).collect()
     EVAL_model(Model_ch, TFR_ch)
-    // hyper params:learning rates
-    //Learning_rate_ch = channel.from(params.learning_rates)
-    //Chrom_ch = channel.from(1..params.chrom)
 
 }
 
@@ -60,8 +57,9 @@ workflow {
 process EVAL_model {
     container 'ndatth/deepsea:v0.0.0'
     publishDir "${params.outdir}", mode: 'copy', overwrite: true
-    memory '8 GB'
-    cpus 1
+    memory '60 GB'
+    cpus 8
+    label 'with_1gpu'
 
     input:
     path model
@@ -74,7 +72,7 @@ process EVAL_model {
     script:
     """
     base=$(basename "$model" .h5)
-    evaluate_model.py --test *_fw.tfr --val *_fw.val --out ${base}_eval --batch_size 1024
+    evaluate_model.py --test *_fw.tfr --val *_fw.val --out \${base}_eval --batch_size 1024
 
     """
 }
