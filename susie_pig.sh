@@ -33,7 +33,7 @@ nextflow run main_susie.nf -resume \
     -w "work_dir_susie" \
     -name "susie_pig_keras_${random_chars}" \
     --col_file "$col_file" \
-    --models "$PWD/selected_model/model.h5" \
+    --model "$PWD/selected_model/model.h5" \
     --vcfs "$PWD/data/susie_pig_gvf/*.txt" \
     --genome "$genome" \
     -with-tower
