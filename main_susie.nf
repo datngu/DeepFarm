@@ -59,7 +59,7 @@ process IPACT_inference {
         --model ${model} \
         --vcf ${vcf_file} \
         --genome ${genome} \
-        --model_file ${model_weight} \
+        --model ${model} \
         --cols ${col_file} \
         --out \${base_name}_impact_scores.txt \
 
