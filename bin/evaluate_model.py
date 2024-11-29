@@ -101,8 +101,8 @@ if __name__ == "__main__":
         # Convert evaluation results to DataFrame and save to CSV
         df = pd.DataFrame(evals)
         df.to_csv(out_csv, index=False)
-        print(f'auroc: {np.nanmean(evals['auroc'])}') 
-        print(f'aupr: {np.nanmean(evals['aupr'])}') 
+        print(f"auroc: {np.nanmean(evals['auroc'])}") 
+        print(f"aupr: {np.nanmean(evals['aupr'])}")
 
     except Exception as e:
         print(f"Error occurred while saving results: {e}")
