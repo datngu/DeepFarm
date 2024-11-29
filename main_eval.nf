@@ -46,6 +46,7 @@ workflow {
     
     Model_ch = Channel.fromPath(params.models, checkIfExists: true)
     TFR_ch = Channel.fromPath(params.test_tfr, checkIfExists: true)
+    EVAL_model(Model_ch, TFR_ch)
     // hyper params:learning rates
     //Learning_rate_ch = channel.from(params.learning_rates)
     //Chrom_ch = channel.from(1..params.chrom)
@@ -67,13 +68,13 @@ process EVAL_model {
     path tfr
 
     output:
-    path("genome.fa*")
+    path("*_eval*")
 
 
     script:
     """
     base=$(basename "$model" .h5)
     evaluate_model.py --test *_fw.tfr --val *_fw.val --out ${base}_eval --batch_size 1024
-    
+
     """
 }
