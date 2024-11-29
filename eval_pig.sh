@@ -21,7 +21,7 @@ export TOWER_ACCESS_TOKEN=eyJ0aWQiOiA3OTAxfS4xNGY5NTFmOWNiZmEwNjZhOGFkYzliZTg3MD
 
 test_chrom=17
 
-mkdir trained_results
+mkdir -p trained_results
 cp results/train/* trained_results
 cp results/tfr_data/${test_chrom}_fw.tfr trained_results
 
