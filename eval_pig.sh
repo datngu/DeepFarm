@@ -1,0 +1,37 @@
+#!/bin/bash
+#SBATCH --ntasks=1
+#SBATCH --nodes=1                
+#SBATCH --job-name=val-pig   
+#SBATCH --mem=4G                
+#SBATCH --partition=gpu
+#SBATCH --mail-user=nguyen.thanh.dat@nmbu.no
+#SBATCH --mail-type=ALL
+
+
+module load git/2.23.0-GCCcore-9.3.0-nodocs
+module load Nextflow/24.04.2
+module load singularity/rpm
+
+
+genome='/mnt/users/ngda/genomes/pig/Sus_scrofa.Sscrofa11.1.dna.toplevel.fa'
+
+export NXF_SINGULARITY_CACHEDIR=/mnt/users/ngda/sofware/singularity
+export TOWER_ACCESS_TOKEN=eyJ0aWQiOiA3OTAxfS4xNGY5NTFmOWNiZmEwNjZhOGFkYzliZTg3MDc4YWI4ZTRiYTk4ZmI5
+
+
+test_chrom=17
+
+mkdir trained_results
+cp results/train/* trained_results
+cp results/tfr_data/${test_chrom}_fw.tfr trained_results
+
+
+nextflow run main_eval.nf -resume -w work_dir \
+    --genome ${genome} \
+    --chrom 18 \
+    --val_chrom 16 \
+    --test_chrom 17 \
+    --window 200 \
+    --seqlen 1000 \
+    --peaks '/mnt/SCRATCH/ngda/data/Pig/*.bed' \
+    -with-tower
