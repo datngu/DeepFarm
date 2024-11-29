@@ -5,6 +5,7 @@ import sys
 import numpy as np
 import pandas as pd
 import argparse
+import pickle
 import tensorflow as tf
 from keras.models import load_model
 from sklearn.metrics import roc_auc_score, average_precision_score
