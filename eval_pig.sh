@@ -8,7 +8,7 @@
 #SBATCH --mail-type=ALL
 
 
-module load git/2.23.0-GCCcore-9.3.0-nodocs
+#module load git/2.23.0-GCCcore-9.3.0-nodocs
 module load Nextflow/24.04.2
 module load singularity/rpm
 
