@@ -1,36 +1,11 @@
 #!/usr/bin/env python
 from keras.models import load_model, Model
-from tqdm import tqdm
+#from tqdm import tqdm
 import numpy as np
 import pandas as pd
 import tensorflow as tf
 import argparse
 import os, sys, pysam
-
-
-parser = argparse.ArgumentParser(description = "Predict variant impact of genomic variant)", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument("--model", help = "trained model (tensorflow, h5 format)", required = True)
-parser.add_argument("--cols", help = "used to label output columns , txt file contains lablels for each column predicited, each line correspond a track", required = True)
-parser.add_argument("--vcf", help = "VCF input, chromosme must be encoded as number {1,2,..}", required = True)
-parser.add_argument("--genome", help = "Genome fasta file, typically download from ensemble, chromosme must be encoded as number {1,2,..}", required = True)
-parser.add_argument("--out", default = "predicted_variant_impact.txt", help = "output txt file")
-
-
-args = parser.parse_args()
-vcf_file = args.vcf
-genome_file = args.genome
-model_file = args.model 
-col_file = args.cols
-out_file = args.out
-
-#vcf_file = '/Users/datn/github/nf-rasqual/data/genotype.vcf.gz'
-#genome_file = '/Users/datn/GENOMES/atlantic_salmon/Salmo_salar.Ssal_v3.1.dna.toplevel.fa'
-#model_file = '/Users/datn/DATA_ANALYSES/OCR_prediction/orion_trained/salmon_fw/danq_model.h5'
-#col_file = '/Users/datn/DATA_ANALYSES/OCR_prediction/data_downloaded/salmon_colnames.txt'
-#out_file = 'test.txt'
-
-
-#  ./bin/predict_impact_vcf.py --vcf /Users/datn/github/nf-rasqual/data/genotype.vcf.gz --genome /Users/datn/GENOMES/atlantic_salmon/Salmo_salar.Ssal_v3.1.dna.toplevel.fa --cols /Users/datn/DATA_ANALYSES/OCR_prediction/data_downloaded/salmon_colnames.txt --model /Users/datn/DATA_ANALYSES/OCR_prediction/orion_trained/salmon_fw/danq_model.h5 --out all_salmon.txt
 
 ## functions
 
@@ -80,10 +55,14 @@ def vcf2df(vcf_path):
         id = record.id
         ref = record.ref
         alt = record.alts[0]
-        records.append([chrom, pos, id, ref, alt])
+        records.append([chrom, pos, pos, id, ref, alt])
 
-    return pd.DataFrame(records, columns=['chr', 'pos', 'id', 'ref', 'alt'])
+    return pd.DataFrame(records, columns=['chr', 'pos', 'end', 'id', 'ref', 'alt'])
 
+def read_gvf_txt(file_path):
+    df = pd.read_table(file_path, header = 0)
+    df['chr'] = df['chr'].astype('str')
+    return df
 
 
 def get_seq(vcf_df, idx, delta=500):
@@ -141,26 +120,50 @@ def score_variant_block(df_vcf):
     return df_dif_merged
 
 
-####
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description = "Predict variant impact of genomic variant)", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("--model", help = "trained model (tensorflow, h5 format)", required = True)
+    parser.add_argument("--cols", help = "used to label output columns , txt file contains lablels for each column predicited, each line correspond a track", required = True)
+    parser.add_argument("--vcf", help = "VCF input, chromosme must be encoded as number {1,2,..}", required = True)
+    parser.add_argument("--genome", help = "Genome fasta file, typically download from ensemble, chromosme must be encoded as number {1,2,..}", required = True)
+    parser.add_argument("--out", default = "predicted_variant_impact.txt", help = "output txt file")
 
-model = load_model(model_file)
-df = vcf2df(vcf_file)
-ref_genome = pysam.FastaFile(genome_file)
-cols = pd.read_csv(col_file, header=None)
 
-jobs = list(range(0, len(df), 10000))
-jobs[-1] = len(df)
+    args = parser.parse_args()
+    vcf_file = args.vcf
+    genome_file = args.genome
+    model_file = args.model 
+    col_file = args.cols
+    out_file = args.out
+    model = load_model(model_file)
 
-#res_all = []
-for i in tqdm( range(1, len(jobs))):
-    s = jobs[i-1]
-    e = jobs[i]
-    my_df = df.iloc[s:e, :]
-    scores = score_variant_block(my_df)
-    scores.drop("index", axis = 1)
-    #res_all.append(scores)
-    if i == 1:
-        scores.to_csv(out_file, sep = '\t', index=False)
+    #df = vcf2df(vcf_file)
+    # Load variant file
+    if vcf_file.endswith('txt'):
+        df = read_gvf_txt(vcf_file)
+    elif vcf_file.endswith('vcf.gz'):
+        df = vcf2df(vcf_file)
     else:
-        scores.to_csv(out_file, mode='a', sep = '\t', index=False, header=False)
+        raise ValueError('Variant file must end with ".txt" or ".vcf.gz"')
+
+    ref_genome = pysam.FastaFile(genome_file)
+    cols = pd.read_csv(col_file, header=None)
+
+    jobs = list(range(0, len(df), 10000))
+    jobs[-1] = len(df)
+
+    
+    #res_all = []
+    #for i in tqdm(range(1, len(jobs))):
+    for i in range(1, len(jobs)):
+        s = jobs[i-1]
+        e = jobs[i]
+        my_df = df.iloc[s:e, :]
+        scores = score_variant_block(my_df)
+        scores = scores.drop("index", axis = 1)
+        #res_all.append(scores)
+        if i == 1:
+            scores.to_csv(out_file, sep = '\t', index=False)
+        else:
+            scores.to_csv(out_file, mode='a', sep = '\t', index=False, header=False)
 
