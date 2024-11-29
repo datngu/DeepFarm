@@ -71,7 +71,7 @@ process EVAL_model {
 
     script:
     """
-    base=$(basename "$model" .h5)
+    base=\$(basename "$model" .h5)
     evaluate_model.py --test *_fw.tfr --val *_fw.val --out \${base}_eval --batch_size 1024
 
     """
