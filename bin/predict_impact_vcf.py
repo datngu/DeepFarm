@@ -149,7 +149,7 @@ if __name__ == "__main__":
     ref_genome = pysam.FastaFile(genome_file)
     cols = pd.read_csv(col_file, header=None)
 
-    jobs = list(range(0, len(df), 10000))
+    jobs = list(range(0, len(df), 512))
     jobs[-1] = len(df)
 
     
