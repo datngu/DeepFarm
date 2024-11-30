@@ -14,7 +14,7 @@ module load singularity/rpm
 
 
 
-genome='/mnt/users/ngda/genomes/chicken/Gallus_gallus.GRCg6a.dna.toplevel.fa'
+genome='/Users/datn/GENOMES/chicken/chromosomes_1_to_28.fa'
 
 export NXF_SINGULARITY_CACHEDIR=/mnt/users/ngda/sofware/singularity
 export TOWER_ACCESS_TOKEN=eyJ0aWQiOiA3OTAxfS4xNGY5NTFmOWNiZmEwNjZhOGFkYzliZTg3MDc4YWI4ZTRiYTk4ZmI5
@@ -25,7 +25,7 @@ random_chars=$(printf "%s" "${chars:RANDOM%${#chars}:1}${chars:RANDOM%${#chars}:
 nextflow run main.nf -resume -w work_dir \
     -name "deepfarm_chicken_${random_chars}" \
     --genome ${genome} \
-    --chrom 30 \
+    --chrom 28 \
     --val_chrom 21 \
     --test_chrom 25 \
     --window 200 \
