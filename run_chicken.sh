@@ -14,7 +14,7 @@ module load singularity/rpm
 
 
 
-genome='/mnt/users/ngda/genomes/chicken/chromosomes_1_to_28.fa'
+genome='/mnt/users/ngda/genomes/chicken/chromosomes_1_to_28_and_MT.fa'
 
 export NXF_SINGULARITY_CACHEDIR=/mnt/users/ngda/sofware/singularity
 export TOWER_ACCESS_TOKEN=eyJ0aWQiOiA3OTAxfS4xNGY5NTFmOWNiZmEwNjZhOGFkYzliZTg3MDc4YWI4ZTRiYTk4ZmI5
