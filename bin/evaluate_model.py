@@ -92,6 +92,7 @@ if __name__ == "__main__":
     # Output file names
     out_pkl = out + '.pkl'
     out_csv = out + '.csv'
+    out_npz = out + '.npz'
     # Write results to output files
     try:
         # Save evaluation results as pickle
@@ -103,6 +104,8 @@ if __name__ == "__main__":
         df.to_csv(out_csv, index=False)
         print(f"auroc: {np.nanmean(evals['auroc'])}") 
         print(f"aupr: {np.nanmean(evals['aupr'])}")
-
+        
+        # save arrays
+        np.savez(out_npz, predictions = predictions, true_labels = true_labels)
     except Exception as e:
         print(f"Error occurred while saving results: {e}")
