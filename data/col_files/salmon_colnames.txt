@@ -1,11 +1,3 @@
-ATAC_Brain_Immature_Female_R1.bed
-ATAC_Brain_Immature_Female_R2.bed
-ATAC_Brain_Immature_Male_R1.bed
-ATAC_Brain_Mature_Female_R1.bed
-ATAC_Brain_Mature_Female_R2.bed
-ATAC_Brain_Mature_Female_R3.bed
-ATAC_Brain_Mature_Male_R2.bed
-ATAC_Brain_Mature_Male_R3.bed
 ATAC_Gill_Immature_Female_R1.bed
 ATAC_Gill_Immature_Female_R2.bed
 ATAC_Gill_Immature_Female_R3.bed
