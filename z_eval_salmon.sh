@@ -24,7 +24,7 @@ test_chrom=25
 mkdir -p trained_results
 
 cp results/train/* trained_results
-
+cp /mnt/ScratchProjects/Aqua-Faang/dat_projects/dl_project/analysis_paper/selected_models/salmon_DanQ.h5 trained_results/
 cp results/tfr_data/${test_chrom}_fw.tfr trained_results
 
 
